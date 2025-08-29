@@ -1,8 +1,11 @@
 # Virtual environments
 ann_env/
+ann_env_new/
+dl_gpu_env/
 venv/
 env/
 .env/
+*.venv/
 
 # Python cache
 __pycache__/
