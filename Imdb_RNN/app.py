@@ -16,13 +16,16 @@ word_index = imdb.get_word_index()
 reverse_word_index = {value :key for key , value in word_index.items()}
 
 ##Load the model
-model_path = 'Simple_RNN_imdb.h5'
+# Since Streamlit runs from repo root, we need to specify the full path
+model_path = 'Imdb_RNN/Simple_RNN_imdb.h5'
 if os.path.exists(model_path):
     model = tf.keras.models.load_model(model_path)
     st.success("Model loaded successfully!")
 else:
     st.error(f"Model file '{model_path}' not found!")
-    st.write("Available files:", os.listdir('.'))
+    st.write("Available files in root:", os.listdir('.'))
+    if os.path.exists('Imdb_RNN'):
+        st.write("Available files in Imdb_RNN:", os.listdir('Imdb_RNN'))
 
 ###Step 2-helper Function
 def decode_review(endcoded_review):
