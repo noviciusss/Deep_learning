@@ -16,12 +16,15 @@ word_index = imdb.get_word_index()
 reverse_word_index = {value :key for key , value in word_index.items()}
 
 ##Load the model
+model_path = 'Imdb_RNN/Simple_RNN_imdb.h5'
 try:
-    model = tf.keras.models.load_model('Simple_RNN_imdb.h5')
-    st.success("✅ Model loaded successfully!")
+    model = tf.keras.models.load_model(model_path)
+    st.success("Model loaded successfully!")
 except Exception as e:
-    st.error(f"❌ Error loading model: {str(e)}")
-    st.info("This is a TensorFlow version compatibility issue.")
+    st.error(f"Error loading model: {str(e)}")
+    st.write("Available files in root:", os.listdir('.'))
+    if os.path.exists('Imdb_RNN'):
+        st.write("Available files in Imdb_RNN:", os.listdir('Imdb_RNN'))
     model = None
 
 ###Step 2-helper Function
