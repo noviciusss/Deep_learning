@@ -34,7 +34,7 @@ def decode_review(endcoded_review):
 def preprocess_review(text):
     words = text.lower().split()
     endoded_review =[word_index.get(word,2)+3 for word in words]
-    padded_review = sequence.pad_sequences([endoded_review], maxlen=500)
+    padded_review = sequence.pad_sequences([endoded_review], maxlen=2500)
     return padded_review
 
 ###Predicton function
