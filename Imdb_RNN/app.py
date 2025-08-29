@@ -7,25 +7,22 @@ from tensorflow.keras.layers import Embedding,SimpleRNN,Dense
 import os
 import streamlit as st
 
-# Debug: Check current working directory and files
-st.write("Current working directory:", os.getcwd())
-st.write("Files in current directory:", os.listdir('.'))
 
 #Load the imdb dataset word index 
 word_index = imdb.get_word_index()
 reverse_word_index = {value :key for key , value in word_index.items()}
 
 ##Load the model
-# Since Streamlit runs from repo root, we need to specify the full path
 model_path = 'Imdb_RNN/Simple_RNN_imdb.h5'
-if os.path.exists(model_path):
+try:
     model = tf.keras.models.load_model(model_path)
     st.success("Model loaded successfully!")
-else:
-    st.error(f"Model file '{model_path}' not found!")
+except Exception as e:
+    st.error(f"Error loading model: {str(e)}")
     st.write("Available files in root:", os.listdir('.'))
     if os.path.exists('Imdb_RNN'):
         st.write("Available files in Imdb_RNN:", os.listdir('Imdb_RNN'))
+    model = None
 
 ###Step 2-helper Function
 def decode_review(endcoded_review):
@@ -39,11 +36,11 @@ def preprocess_review(text):
 
 ###Predicton function
 def predict_sentiment(review):
-    if 'model' not in globals():
+    if model is None:
         return "Error: Model not loaded", 0.0
     
     preprocess = preprocess_review(review)
-    models_prediction = model.predict(preprocess)
+    models_prediction = model.predict(preprocess, verbose=0)
     
     sentiment = 'Positive' if models_prediction[0][0]>0.5 else 'Negative'
     return sentiment, float(models_prediction[0][0])
@@ -54,10 +51,12 @@ st.write("Enter a movie review below to predict its sentiment (positive or negat
 user_input = st.text_area("Movie Review", height=200)
 
 if st.button("Predict Sentiment"):
-    if 'model' in globals():
+    if model is not None and user_input.strip():
         sentiment, confidence = predict_sentiment(user_input)
-        st.write(f"Sentiment: {sentiment}")
-        st.write(f"Confidence: {confidence:.2%}")
+        st.write(f"**Sentiment**: {sentiment}")
+        st.write(f"**Confidence**: {confidence:.2%}")
+    elif not user_input.strip():
+        st.warning("Please enter a movie review.")
     else:
         st.error("Model not loaded. Cannot make predictions.")
 else:
