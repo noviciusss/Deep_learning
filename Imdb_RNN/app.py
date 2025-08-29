@@ -33,7 +33,16 @@ def decode_review(endcoded_review):
 
 def preprocess_review(text):
     words = text.lower().split()
-    endoded_review =[word_index.get(word,2)+3 for word in words]
+    # Cap vocabulary to match training (max_features=30000)
+    max_features = 30000
+    endoded_review = []
+    
+    for word in words:
+        word_idx = word_index.get(word, 2)  # Default to 2 for unknown words
+        # Cap the index to prevent embedding layer errors
+        if word_idx >= max_features:
+            word_idx = 2  # Treat as unknown word
+        endoded_review.append(word_idx + 3)
     padded_review = sequence.pad_sequences([endoded_review], maxlen=500)
     return padded_review
 
