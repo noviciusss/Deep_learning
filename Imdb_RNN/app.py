@@ -16,8 +16,8 @@ word_index = imdb.get_word_index()
 reverse_word_index = {value :key for key , value in word_index.items()}
 
 ##Load the model
-model_path = 'Simple_RNN_imdb.h5'
-# model_path = 'Imdb_RNN/Simple_RNN_imdb.h5'
+#model_path = 'Simple_RNN_imdb.h5'
+model_path = 'Imdb_RNN/Simple_RNN_imdb.h5'
 try:
     model = tf.keras.models.load_model(model_path)
     st.success("Model loaded successfully!")
