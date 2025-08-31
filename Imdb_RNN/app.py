@@ -16,8 +16,8 @@ word_index = imdb.get_word_index()
 reverse_word_index = {value :key for key , value in word_index.items()}
 
 ##Load the model
-model_path = 'Simple_RNN_imdb.h5'
-# model_path = 'Imdb_RNN/Simple_RNN_imdb.h5'
+#model_path = 'Simple_RNN_imdb.h5'
+model_path = 'Imdb_RNN/Simple_RNN_imdb.h5'
 try:
     model = tf.keras.models.load_model(model_path)
     st.success("Model loaded successfully!")
@@ -58,8 +58,8 @@ def predict_sentiment(review):
     try:
         preprocess = preprocess_review(review)
         models_prediction = model.predict(preprocess)
-        
-        sentiment = 'Positive' if models_prediction[0][0] > 0.5 else 'Negative'
+
+        sentiment = 'Positive' if models_prediction[0][0] > 0.65 else ('Neutral' if models_prediction[0][0] > 0.45 else 'Negative')
         return sentiment, float(models_prediction[0][0])
     except Exception as e:
         return f"Error during prediction: {str(e)}", 0.0
