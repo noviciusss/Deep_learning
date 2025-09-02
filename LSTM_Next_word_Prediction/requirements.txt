@@ -1,4 +1,4 @@
 streamlit
-tetensorflow==2.20.0
+tensorflow==2.20.0
 numpy
 pickle-mixin
